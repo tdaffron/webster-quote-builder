@@ -1,5 +1,6 @@
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { publicPath } from "@/lib/public-path";
 
 export function SiteHeader({ price }: { price: ReactNode }) {
   return (
@@ -8,7 +9,7 @@ export function SiteHeader({ price }: { price: ReactNode }) {
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <a href="#estimate" className="shrink-0">
           <Image
-            src="/brand/logo.png"
+            src={publicPath("/brand/logo.png")}
             alt="Webster Air Conditioning & Heating"
             width={400}
             height={150}

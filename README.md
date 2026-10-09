@@ -16,6 +16,17 @@ Carrier heat pumps (`25…`) and Goodman heat pumps (`GSZ…`) decode the same w
 
 Square footage suggests a starting tonnage (a stand-in for Manual J, not a load calculation). The plate can agree with that size, or the screen will say the existing unit looks oversized or small and offer the allowed sizes.
 
+## Share it on GitHub Pages
+
+The site exports to static files, and `.github/workflows/pages.yml` publishes them. After the repository is on GitHub:
+
+1. Make the repository public so the client can open it without a GitHub login.
+2. Push the `main` branch.
+3. In the repository, open Settings → Pages → Build and deployment, and set Source to GitHub Actions.
+4. Open the Actions tab and wait for “Publish demo” to finish. The client link is on that run, and it looks like `https://<github-user>.github.io/<repository>/`.
+
+The quote form confirms on the page with a `WEB-` reference. GitHub Pages has no server, so the demo does not store or email the lead.
+
 ## Run it
 
 ```bash
@@ -23,11 +34,11 @@ npm install
 npm run dev
 ```
 
-Open the URL printed in the terminal. Production:
+Open the URL printed in the terminal. A static export, the same one GitHub Pages serves:
 
 ```bash
 npm run build
-npm start
+npx serve out
 ```
 
 Checks:

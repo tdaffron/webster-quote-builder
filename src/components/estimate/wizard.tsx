@@ -15,7 +15,7 @@ import { Button } from "@/components/ui/button";
 import { ESTIMATE_CLOCK, SIMULATED_PHOTO_PLATE, decodePlate } from "@/lib/decoder";
 import { buildQuote } from "@/lib/estimate";
 import { formatSqft, formatTons, moneyRange } from "@/lib/format";
-import { validateLead, type LeadErrors, type LeadInput } from "@/lib/lead";
+import { leadReference, validateLead, type LeadErrors, type LeadInput } from "@/lib/lead";
 import { PRICE_BOOK } from "@/lib/pricing";
 import { sizingAdvice } from "@/lib/sizing";
 import type { HeatStripId, HomeType, StandardTons, StepIndex, ThermostatId, TierId, UnitLocation } from "@/lib/types";
@@ -64,8 +64,6 @@ export function EstimateApp() {
   const [blockError, setBlockError] = useState<string | null>(null);
   const [lead, setLead] = useState<LeadInput>(EMPTY_LEAD);
   const [leadErrors, setLeadErrors] = useState<LeadErrors>({});
-  const [submitting, setSubmitting] = useState(false);
-  const [submitError, setSubmitError] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
   const scanTimer = useRef<number | null>(null);
 
@@ -173,45 +171,12 @@ export function EstimateApp() {
     }, 80);
   }
 
-  async function submitLead() {
+  function submitLead() {
     const errors = validateLead(lead);
     setLeadErrors(errors);
     if (Object.keys(errors).length > 0) return;
-    setSubmitting(true);
-    setSubmitError(null);
-    try {
-      const response = await fetch("/api/leads", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          ...lead,
-          summary: {
-            home,
-            sqft,
-            location,
-            tons: pricedTons,
-            tier,
-            heatStrip,
-            thermostat,
-            model: decoded.ok ? decoded.model : null,
-            low: quote?.low ?? null,
-            high: quote?.high ?? null,
-          },
-        }),
-      });
-      const data = (await response.json()) as { ok?: boolean; reference?: string; errors?: LeadErrors; message?: string };
-      if (!response.ok || !data.reference) {
-        if (data.errors) setLeadErrors(data.errors);
-        setSubmitError(data.message ?? "We couldn’t save that. Call (407) 295-0598 and we’ll write it up.");
-        return;
-      }
-      setReference(data.reference);
-      scrollToTool();
-    } catch {
-      setSubmitError("We couldn’t reach the office just now. Call (407) 295-0598 and we’ll write it up.");
-    } finally {
-      setSubmitting(false);
-    }
+    setReference(leadReference());
+    scrollToTool();
   }
 
   function reset() {
@@ -236,7 +201,6 @@ export function EstimateApp() {
     setBlockError(null);
     setLead(EMPTY_LEAD);
     setLeadErrors({});
-    setSubmitError(null);
     setReference(null);
     scrollToTool();
   }
@@ -357,8 +321,8 @@ export function EstimateApp() {
                 summary={summaryBits}
                 priceLabel={moneyRange(quote.low, quote.high)}
                 monthlyLabel={moneyRange(quote.monthlyLow, quote.monthlyHigh)}
-                submitting={submitting}
-                submitError={submitError}
+                submitting={false}
+                submitError={null}
                 onChange={(patch) => {
                   setLead((current) => ({ ...current, ...patch }));
                   setLeadErrors((current) => {

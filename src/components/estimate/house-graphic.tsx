@@ -139,7 +139,12 @@ function Ranch({ location }: { location: UnitLocation | null }) {
       <path d="M120 250 H600" stroke="#4e5d6d" strokeWidth={2} opacity={0.45} />
       <path d="M150 220 H570" stroke="#4e5d6d" strokeWidth={2} opacity={0.3} />
       {attic ? (
-        <path d="M230 230 L280 186 H470 L520 230 Z" fill="#f4ecdf" stroke="#0b6e8a" strokeWidth={2} strokeDasharray="5 4" />
+        <g>
+          <path d="M200 246 L268 176 H500 L560 246 Z" fill="#fff4e4" stroke="#0b6e8a" strokeWidth={2.5} />
+          <text x={384} y={198} textAnchor="middle" fill="#0b6e8a" fontSize={11} fontFamily="Cabin, sans-serif" fontWeight={700}>
+            ATTIC
+          </text>
+        </g>
       ) : null}
       <rect x={110} y={268} width={500} height={128} fill="#f6f3ee" stroke="#3d4c5c" strokeWidth={2} />
       <path d="M430 268 V396" stroke="#3d4c5c" strokeWidth={2} />
@@ -155,7 +160,7 @@ function Ranch({ location }: { location: UnitLocation | null }) {
           <path d="M191 292 V378" stroke="#0b6e8a" strokeWidth={1.5} />
         </g>
       ) : null}
-      {location === "attic" ? <AirHandler x={330} y={188} /> : null}
+      {location === "attic" ? <AirHandler x={353} y={206} /> : null}
       {location === "closet" ? <AirHandler x={158} y={318} /> : null}
       {location === "garage" ? <AirHandler x={448} y={328} /> : null}
     </g>

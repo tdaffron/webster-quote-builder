@@ -12,7 +12,7 @@ import { StickyPrice } from "@/components/estimate/sticky-price";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import { Button } from "@/components/ui/button";
-import { SIMULATED_PHOTO_PLATE, decodePlate } from "@/lib/decoder";
+import { ESTIMATE_CLOCK, SIMULATED_PHOTO_PLATE, decodePlate } from "@/lib/decoder";
 import { buildQuote } from "@/lib/estimate";
 import { formatSqft, formatTons, moneyRange } from "@/lib/format";
 import { validateLead, type LeadErrors, type LeadInput } from "@/lib/lead";
@@ -68,7 +68,12 @@ export function EstimateApp() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
+  const [clock, setClock] = useState(ESTIMATE_CLOCK);
   const scanTimer = useRef<number | null>(null);
+
+  useEffect(() => {
+    setClock(new Date());
+  }, []);
 
   useEffect(() => {
     return () => {
@@ -76,7 +81,7 @@ export function EstimateApp() {
     };
   }, []);
 
-  const decoded = useMemo(() => decodePlate(model, serial), [model, serial]);
+  const decoded = useMemo(() => decodePlate(model, serial, clock), [model, serial, clock]);
   const advice = useMemo(
     () => (home ? sizingAdvice(sqft, home, decoded.ok ? decoded.tons : null) : null),
     [home, sqft, decoded],
@@ -259,7 +264,7 @@ export function EstimateApp() {
   return (
     <div className="flex min-h-screen flex-col bg-[#f6fafb] text-ink">
       <SiteHeader price={<StickyPrice quote={quote} detail={priceDetail} />} />
-      <main id="estimate" className="mx-auto w-full max-w-6xl flex-1 px-4 py-8 sm:px-6">
+      <main id="estimate" className="mx-auto w-full max-w-6xl flex-1 scroll-mt-36 px-4 py-8 sm:px-6">
         <Stepper
           step={step}
           maxReachable={maxReachable}

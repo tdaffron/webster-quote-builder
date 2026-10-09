@@ -38,7 +38,7 @@ export function StepSetup({
     <div className="step-in">
       <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Where does the system sit today?</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-steel">
-        The indoor unit’s location changes the labor. Square footage sets the size we’d start with. The house on the left updates as you answer.
+        The indoor unit’s location changes the labor. Square footage sets the size we’d start with. The drawing updates as you answer.
       </p>
 
       <div className="mt-6 grid gap-3">

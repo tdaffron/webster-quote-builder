@@ -40,6 +40,9 @@ export type DecodedPlate = (DecodedModel | DecodeFailure) & {
 
 const CAPACITY_BTU = [18000, 24000, 30000, 36000, 42000, 48000, 60000] as const;
 
+/** First-render clock so ages stay stable during server render. The browser swaps in the real date after mount. */
+export const ESTIMATE_CLOCK = new Date(Date.UTC(2026, 9, 9, 16));
+
 const MONTHS = [
   "January",
   "February",
@@ -256,7 +259,7 @@ function decodeGoodmanSerial(serial: string, now: Date): SerialInfo | null {
   return finishSerial(manufactured, now, { year, month, week: null });
 }
 
-export function decodeSerial(format: PlateFormat, input: string, now = new Date()): SerialInfo | null {
+export function decodeSerial(format: PlateFormat, input: string, now: Date = ESTIMATE_CLOCK): SerialInfo | null {
   const serial = normalizePlate(input);
   if (!serial) return null;
   if (format === "trane") return decodeTraneSerial(serial, now);
@@ -277,7 +280,7 @@ export function formatAge(serial: SerialInfo): string {
   return `Built ${serial.year} · ${span}`;
 }
 
-export function decodePlate(modelInput: string, serialInput: string, now = new Date()): DecodedPlate {
+export function decodePlate(modelInput: string, serialInput: string, now: Date = ESTIMATE_CLOCK): DecodedPlate {
   const model = decodeModel(modelInput);
   if (!model.ok) {
     return { ...model, serial: null, serialMessage: null, ageLabel: null };

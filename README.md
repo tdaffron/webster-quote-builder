@@ -18,12 +18,13 @@ Square footage suggests a starting tonnage (a stand-in for Manual J, not a load 
 
 ## Share it on GitHub Pages
 
-The site exports to static files, and `.github/workflows/pages.yml` publishes them. After the repository is on GitHub:
+The site exports to static files, and `.github/workflows/pages.yml` publishes them to [tdaffron/webster-quote-builder](https://github.com/tdaffron/webster-quote-builder).
 
-1. Make the repository public so the client can open it without a GitHub login.
-2. Push the `main` branch.
-3. In the repository, open Settings → Pages → Build and deployment, and set Source to GitHub Actions.
-4. Open the Actions tab and wait for “Publish demo” to finish. The client link is on that run, and it looks like `https://<github-user>.github.io/<repository>/`.
+1. Push the `main` branch to that repository.
+2. In the repository, open Settings → Pages → Build and deployment, and set Source to GitHub Actions.
+3. Open the Actions tab and wait for “Publish demo” to finish.
+
+The client link is [https://tdaffron.github.io/webster-quote-builder/](https://tdaffron.github.io/webster-quote-builder/).
 
 The quote form confirms on the page with a `WEB-` reference. GitHub Pages has no server, so the demo does not store or email the lead.
 

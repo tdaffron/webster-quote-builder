@@ -19,7 +19,6 @@ import { validateLead, type LeadErrors, type LeadInput } from "@/lib/lead";
 import { PRICE_BOOK } from "@/lib/pricing";
 import { sizingAdvice } from "@/lib/sizing";
 import type { HeatStripId, HomeType, StandardTons, StepIndex, ThermostatId, TierId, UnitLocation } from "@/lib/types";
-import { cn } from "cn";
 import { useEffect, useMemo, useRef, useState } from "react";
 
 const EMPTY_LEAD: LeadInput = {
@@ -68,12 +67,7 @@ export function EstimateApp() {
   const [submitting, setSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [reference, setReference] = useState<string | null>(null);
-  const [clock, setClock] = useState(ESTIMATE_CLOCK);
   const scanTimer = useRef<number | null>(null);
-
-  useEffect(() => {
-    setClock(new Date());
-  }, []);
 
   useEffect(() => {
     return () => {
@@ -81,7 +75,7 @@ export function EstimateApp() {
     };
   }, []);
 
-  const decoded = useMemo(() => decodePlate(model, serial, clock), [model, serial, clock]);
+  const decoded = useMemo(() => decodePlate(model, serial, ESTIMATE_CLOCK), [model, serial]);
   const advice = useMemo(
     () => (home ? sizingAdvice(sqft, home, decoded.ok ? decoded.tons : null) : null),
     [home, sqft, decoded],
@@ -274,7 +268,7 @@ export function EstimateApp() {
         />
 
         <div className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(260px,380px)_minmax(0,1fr)]">
-          <div className={cn("lg:sticky lg:top-40", step === 0 ? "hidden lg:block" : "block")}>
+          <div className="lg:sticky lg:top-40">
             <div className="rounded-3xl bg-white p-3 ring-1 ring-slate-200">
               <HouseGraphic home={home} location={location} sqft={home ? sqft : null} />
             </div>

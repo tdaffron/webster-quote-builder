@@ -1,8 +1,9 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  // The demo is opened at 127.0.0.1. Next blocks dev resources for that host unless it is listed.
-  allowedDevOrigins: ["127.0.0.1", "localhost"],
+  // Dev JS is blocked unless the browser's host is listed. The preview opens on
+  // *.agent.cvm.dev, and a blocked bundle leaves the first step as static HTML.
+  allowedDevOrigins: ["127.0.0.1", "localhost", "*.agent.cvm.dev", "**.agent.cvm.dev"],
   cacheComponents: false,
   turbopack: {
     rules: {

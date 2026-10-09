@@ -5,8 +5,8 @@ const STEPS = ["Your home", "Current setup", "Data plate", "System", "Price", "Q
 
 export function Stepper({ step, maxReachable, onStep }: { step: number; maxReachable: number; onStep: (index: number) => void }) {
   return (
-    <nav aria-label="Estimate steps" className="overflow-x-auto">
-      <ol className="flex min-w-[36rem] items-start gap-1 sm:min-w-0">
+    <nav aria-label="Estimate steps">
+      <ol className="flex items-start gap-0.5 sm:gap-1">
         {STEPS.map((label, index) => {
           const complete = index < step;
           const current = index === step;
@@ -35,7 +35,7 @@ export function Stepper({ step, maxReachable, onStep }: { step: number; maxReach
                   </span>
                   <span className={cn("h-px flex-1", index === STEPS.length - 1 ? "bg-transparent" : index < step ? "bg-cyan" : "bg-slate-200")} />
                 </span>
-                <span className={cn("px-1 text-center text-xs leading-tight sm:text-[13px]", current ? "font-semibold text-ink" : "text-steel")}>
+                <span className={cn("px-0.5 text-center text-[10px] leading-tight sm:px-1 sm:text-[13px]", current ? "font-semibold text-ink" : "text-steel")}>
                   {label}
                 </span>
               </button>

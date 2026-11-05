@@ -7,9 +7,12 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-roboto), "Roboto", sans-serif;
+  /* Name the faces directly. next/font's CSS-variable class for Roboto can
+     disagree with the class stamped on <html> in the static export, and an
+     unresolved var() drops the entire font-family. */
+  --font-sans: "Roboto", "Roboto Fallback", sans-serif;
   --font-mono: ui-monospace, monospace;
-  --font-heading: var(--font-cabin), "Cabin", sans-serif;
+  --font-heading: "Cabin", "Cabin Fallback", sans-serif;
   --color-cyan: oklch(0.77 0.109 220.95);
   --color-cyan-deep: oklch(0.501 0.091 224.17);
   --color-mint: oklch(0.86 0.154 149.65);
@@ -138,7 +141,7 @@
   h1,
   h2,
   h3 {
-    font-family: var(--font-cabin), Cabin, sans-serif;
+    font-family: "Cabin", "Cabin Fallback", sans-serif;
   }
 }
 

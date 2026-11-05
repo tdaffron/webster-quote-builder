@@ -5,13 +5,11 @@ import "./globals.css";
 const cabin = Cabin({
   variable: "--font-cabin",
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
 });
 
 const roboto = Roboto({
   variable: "--font-roboto",
   subsets: ["latin"],
-  weight: ["400", "500", "700"],
 });
 
 export const metadata: Metadata = {

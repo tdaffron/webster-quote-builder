@@ -1,4 +1,4 @@
-import type { HeatStripId, HomeType, MoneyRange, StandardTons, ThermostatId, TierId, UnitLocation } from "@/lib/types";
+import type { AirQualityId, HomeType, MoneyRange, StandardTons, ThermostatId, TierId, UnitLocation } from "@/lib/types";
 
 /**
  * Placeholder installed-price book for a full heat-pump changeout in the
@@ -10,7 +10,7 @@ import type { HeatStripId, HomeType, MoneyRange, StandardTons, ThermostatId, Tie
  * dollar ranges.
  *
  * Ranges are demo figures, not a quote. Tiers do not overlap so a presenter
- * can show the price step up as the homeowner moves from Good to Best.
+ * can show the price step up as the homeowner moves from Basic to Premium.
  */
 export const PRICE_BOOK = {
   currency: "USD",
@@ -18,14 +18,15 @@ export const PRICE_BOOK = {
   tiers: {
     good: {
       id: "good" as const,
-      name: "Good",
+      name: "Basic",
+      dollarSigns: "$",
       brand: "Comfortmaker",
       product: "Single-stage heat pump",
       seer2: 15.2,
       headline: "Steady comfort, straightforward install.",
       detail:
-        "A single-stage Comfortmaker heat pump. It cools the house, holds up to an Orlando summer, and keeps the installed price in check.",
-      warranty: "10-year parts · 2-year labor",
+        "A single-stage Comfortmaker heat pump. It cools the house, holds up through an Orlando summer, and keeps the installed price in check.",
+      warranty: "10-year parts · 1-year labor",
       byTons: {
         1.5: [6400, 8200],
         2: [7200, 9200],
@@ -38,14 +39,15 @@ export const PRICE_BOOK = {
     },
     better: {
       id: "better" as const,
-      name: "Better",
+      name: "Enhanced",
+      dollarSigns: "$$",
       brand: "Comfortmaker",
       product: "Two-stage heat pump",
       seer2: 17,
       headline: "Quieter, and better at pulling humidity out.",
       detail:
         "Two-stage Comfortmaker equipment. Longer, gentler cycles on humid afternoons. The system most Orlando homes land on.",
-      warranty: "10-year parts · 5-year labor",
+      warranty: "10-year parts · 1-year labor",
       featured: true,
       byTons: {
         1.5: [8600, 10800],
@@ -59,14 +61,15 @@ export const PRICE_BOOK = {
     },
     best: {
       id: "best" as const,
-      name: "Best",
+      name: "Premium",
+      dollarSigns: "$$$",
       brand: "Trane",
       product: "Variable-speed heat pump",
       seer2: 19,
       headline: "The tightest temperature hold we install.",
       detail:
         "A variable-speed Trane heat pump with a communicating thermostat included. Long, quiet runtimes and the strongest humidity control.",
-      warranty: "10-year parts · 10-year labor",
+      warranty: "10-year parts · 1-year labor",
       byTons: {
         1.5: [11200, 14000],
         2: [12200, 15400],
@@ -82,6 +85,7 @@ export const PRICE_BOOK = {
     {
       id: TierId;
       name: string;
+      dollarSigns: string;
       brand: string;
       product: string;
       seer2: number;
@@ -92,32 +96,28 @@ export const PRICE_BOOK = {
       byTons: Record<StandardTons, MoneyRange>;
     }
   >,
-  heatStrips: {
+  airQuality: {
     none: {
-      label: "No heat strip",
-      kw: 0,
-      detail: "Heat pump only. Fine if you rarely want backup heat.",
+      label: "No add-on",
+      detail: "The system as priced, without an air-treatment product.",
       range: [0, 0],
     },
-    "5": {
-      label: "5 kW",
-      kw: 5,
-      detail: "The usual starting point for a Florida heat pump.",
-      range: [350, 500],
+    scrubber: {
+      label: "Air Scrubber",
+      detail: "Placeholder add-on. Webster has not priced this yet.",
+      range: [700, 1100],
     },
-    "8": {
-      label: "8 kW",
-      kw: 8,
-      detail: "More backup on the few cold mornings we get.",
-      range: [450, 700],
+    reme: {
+      label: "REME Halo",
+      detail: "Placeholder add-on. Webster has not priced this yet.",
+      range: [1100, 1600],
     },
-    "10": {
-      label: "10 kW",
-      kw: 10,
-      detail: "For larger homes or rooms that run cold.",
-      range: [600, 850],
+    uv: {
+      label: "UV Light",
+      detail: "Placeholder add-on. Webster has not priced this yet.",
+      range: [400, 700],
     },
-  } satisfies Record<HeatStripId, { label: string; kw: number; detail: string; range: MoneyRange }>,
+  } satisfies Record<AirQualityId, { label: string; detail: string; range: MoneyRange }>,
   thermostats: {
     standard: {
       label: "Programmable",
@@ -131,7 +131,7 @@ export const PRICE_BOOK = {
     },
     premium: {
       label: "Communicating",
-      detail: "Talks to the equipment. Included with Best.",
+      detail: "Talks to the equipment. Included with Premium.",
       range: [400, 650],
     },
   } satisfies Record<ThermostatId, { label: string; detail: string; range: MoneyRange }>,
@@ -146,6 +146,11 @@ export const PRICE_BOOK = {
       detail: "The shortest swap. The air handler is already where we can reach it.",
       range: [0, 0],
     },
+    utility: {
+      label: "Utility room",
+      detail: "Priced like a closet until Webster sets a different adder.",
+      range: [0, 0],
+    },
     garage: {
       label: "Garage",
       detail: "A longer line set and a chase back into the house.",
@@ -153,33 +158,33 @@ export const PRICE_BOOK = {
     },
   } satisfies Record<UnitLocation, { label: string; detail: string; range: MoneyRange }>,
   stories: {
-    ranch: { label: "Single story", range: [0, 0] as MoneyRange },
-    "two-story": {
-      label: "Two-story labor",
+    single: { label: "Single story", range: [0, 0] as MoneyRange },
+    "multi-story": {
+      label: "Multi-story labor",
       range: [650, 1100] as MoneyRange,
     },
-    townhome: { label: "Townhome", range: [0, 0] as MoneyRange },
+    "multi-family": { label: "Multi-family", range: [0, 0] as MoneyRange },
   } satisfies Record<HomeType, { label: string; range: MoneyRange }>,
-  financing: {
-    apr: 0.0999,
-    termMonths: 60,
-    label: "60 months at 9.99% APR",
-    disclaimer:
-      "Placeholder financing for this demo. Not a credit offer and not a commitment to lend. Webster’s lender terms would replace this rate, term, and payment.",
-  },
+  priceNote:
+    "All prices shown are approximate ranges for budgeting purposes only. They are not an official estimate or quote. Actual pricing depends on your home’s specific needs and installation requirements. A member of the Webster AC sales team must visit your property to provide a detailed quote with accurate pricing.",
   included: [
-    "Outdoor heat pump and matching indoor air handler",
-    "Thermostat shown in your options",
-    "Heat strip shown in your options",
-    "New disconnect, whip, and a level pad",
-    "Line-set flush and haul-away of the old equipment",
-    "Permit allowance",
+    "Outdoor condenser and indoor air handler",
+    "Thermostat chosen",
+    "Heat strip",
+    "Float switch",
+    "Hurricane straps",
+    "Permitting",
+    "Line set flush, equipment haul-away, and complete system start-up",
   ],
   excluded: [
     "Duct replacement or added returns",
+    "Grille replacements",
     "Electrical panel upgrades",
-    "Code items we only find once we’re in the attic or closet",
-    "A second system, if the house needs one",
+    "Code items we only find once we are on site",
+    "A second system, if desired",
+    "Drain pan and air handler platform needs",
+    "Copper line set integrity",
+    "Filter sizing and housing",
   ],
 } as const;
 

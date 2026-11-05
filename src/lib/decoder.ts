@@ -82,8 +82,6 @@ export const SAMPLE_PLATES = [
   },
 ] as const;
 
-export const SIMULATED_PHOTO_PLATE = SAMPLE_PLATES[0];
-
 export function normalizePlate(value: string): string {
   return value.toUpperCase().replace(/[^A-Z0-9]/g, "");
 }
@@ -183,7 +181,7 @@ export function decodeModel(input: string): DecodedModel | DecodeFailure {
       ok: false,
       model,
       reason: "empty",
-      message: "Enter the model number from the data plate, or snap a photo.",
+      message: "Enter the model number from the outdoor unit’s data plate.",
     };
   }
   if (model.length < 8) {

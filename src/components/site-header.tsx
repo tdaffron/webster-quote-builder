@@ -1,8 +1,7 @@
 import Image from "next/image";
-import type { ReactNode } from "react";
 import { publicPath } from "@/lib/public-path";
 
-export function SiteHeader({ price }: { price: ReactNode }) {
+export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur">
       <div className="h-1 bg-gradient-to-r from-cyan to-mint" />
@@ -25,7 +24,6 @@ export function SiteHeader({ price }: { price: ReactNode }) {
           </a>
         </div>
       </div>
-      {price}
     </header>
   );
 }

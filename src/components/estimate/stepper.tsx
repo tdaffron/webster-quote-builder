@@ -1,12 +1,12 @@
 import { cn } from "cn";
 import { Check } from "lucide-react";
 
-const STEPS = ["Your home", "Current setup", "Data plate", "System", "Price", "Quote"] as const;
+const STEPS = ["Home", "Setup", "Customize", "Options", "Price", "Plan"] as const;
 
 export function Stepper({ step, maxReachable, onStep }: { step: number; maxReachable: number; onStep: (index: number) => void }) {
   return (
     <nav aria-label="Estimate steps">
-      <ol className="flex items-start gap-0.5 sm:gap-1">
+      <ol className="flex max-w-xl items-start gap-0.5 sm:gap-1">
         {STEPS.map((label, index) => {
           const complete = index < step;
           const current = index === step;

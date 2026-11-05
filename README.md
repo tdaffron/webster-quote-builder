@@ -1,10 +1,10 @@
 # Webster replacement estimate
 
-A demo lead generator for [Webster Air Conditioning & Heating](https://websterac.com/). A homeowner walks six steps — home, current setup, data plate, system, live price, and a short form — and leaves with a price range plus a request for a detailed quote.
+A demo lead generator for [Webster Air Conditioning & Heating](https://websterac.com/). A homeowner walks six steps — home, current equipment locations, system details, comfort options, an approximate range, and a short form.
 
-Pricing is placeholder data for an Orlando heat-pump changeout. It is not a quote. Swap `src/lib/pricing.ts` when Webster’s price book is ready. The screens read that file only.
+Pricing is placeholder data. It is not a quote. Swap `src/lib/pricing.ts` when Webster’s price book is ready. The screens read that file only.
 
-Photo reading is simulated. The model-number decoder is real for three outdoor-unit formats:
+There is no running total. Plate photos are not collected. A typed model number still decodes for three outdoor-unit formats:
 
 | Brand | Example model | What it reads |
 | --- | --- | --- |
@@ -14,7 +14,13 @@ Photo reading is simulated. The model-number decoder is real for three outdoor-u
 
 Carrier heat pumps (`25…`) and Goodman heat pumps (`GSZ…`) decode the same way. Anything else asks the homeowner to pick a size.
 
-Square footage suggests a starting tonnage (a stand-in for Manual J, not a load calculation). The plate can agree with that size, or the screen will say the existing unit looks oversized or small and offer the allowed sizes.
+The customer chooses the system size. Square footage is no longer collected.
+
+## Not in this version
+
+- Copper line set, yes or no. Webster asked to add it, and did not say what Yes means. Hold it for a follow-up.
+- A financing line for Fairwinds Credit Union. The name is known. Webster has not decided to show it.
+- Reading a photo of the data plate.
 
 ## Share it on GitHub Pages
 
@@ -51,7 +57,7 @@ npm run lint
 
 ## Swap the price book
 
-Edit `src/lib/pricing.ts`. Keep the tier, tonnage, heat-strip, thermostat, and location keys. Replace the dollar ranges. Financing rate and term are in the same file. The live bar, the price step, and the monthly payment all use `buildQuote` in `src/lib/estimate.ts`.
+Edit `src/lib/pricing.ts`. Keep the tier, tonnage, thermostat, air-quality, location, and home-type keys. Replace the dollar ranges. The price step uses `buildQuote` in `src/lib/estimate.ts`. There is no monthly payment on screen.
 
 ## Brand
 

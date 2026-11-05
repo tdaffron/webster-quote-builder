@@ -1,25 +1,31 @@
-import { formatSqft } from "@/lib/format";
-import type { HomeType, UnitLocation } from "@/lib/types";
+import type { CondenserSitting, HomeType, UnitLocation } from "@/lib/types";
 import { cn } from "cn";
 
 type HouseGraphicProps = {
   home: HomeType | null;
   location?: UnitLocation | null;
-  sqft?: number | null;
+  condenser?: CondenserSitting | null;
   compact?: boolean;
   className?: string;
 };
 
 const HOME_LABEL: Record<HomeType, string> = {
-  ranch: "Single-story ranch",
-  "two-story": "Two-story",
-  townhome: "Townhome",
+  single: "Single Story Home",
+  "multi-story": "Multi-Story Home",
+  "multi-family": "Multi-Family Home",
 };
 
 const LOCATION_LABEL: Record<UnitLocation, string> = {
-  attic: "Attic air handler",
   closet: "Closet air handler",
+  utility: "Utility room air handler",
   garage: "Garage air handler",
+  attic: "Attic air handler",
+};
+
+const CONDENSER_LABEL: Record<CondenserSitting, string> = {
+  ground: "Ground-level condenser",
+  mounted: "Mounted condenser",
+  rooftop: "Rooftop condenser",
 };
 
 function Window({ x, y, w = 52, h = 38 }: { x: number; y: number; w?: number; h?: number }) {
@@ -106,34 +112,19 @@ function Ground() {
   return <ellipse cx={360} cy={430} rx={250} ry={18} fill="#d5f5e0" />;
 }
 
-function SqftLine({ sqft, x1, x2, y }: { sqft: number; x1: number; x2: number; y: number }) {
-  return (
-    <g>
-      <path d={`M${x1} ${y} H${x2}`} stroke="#0b6e8a" strokeWidth={1.5} />
-      <path d={`M${x1} ${y - 6} V${y + 6} M${x2} ${y - 6} V${y + 6}`} stroke="#0b6e8a" strokeWidth={1.5} />
-      <text
-        x={(x1 + x2) / 2}
-        y={y - 8}
-        textAnchor="middle"
-        fill="#0b6e8a"
-        fontSize={13}
-        fontWeight={700}
-        fontFamily="Cabin, sans-serif"
-      >
-        {formatSqft(sqft)}
-      </text>
-    </g>
-  );
+function condenserAt(sitting: CondenserSitting | null, ground: { x: number; y: number }, wall: { x: number; y: number }, roof: { x: number; y: number }) {
+  if (sitting === "rooftop") return roof;
+  if (sitting === "mounted") return wall;
+  return ground;
 }
 
-function Ranch({ location }: { location: UnitLocation | null }) {
+function Ranch({ location, condenser }: { location: UnitLocation | null; condenser: CondenserSitting | null }) {
   const attic = location === "attic";
   const closet = location === "closet";
   const garage = location === "garage";
   return (
     <g>
       <Palm x={600} y={300} />
-      <Condenser x={36} y={318} />
       <path d="M78 268 L168 168 H552 L642 268 Z" fill="#5e6e80" stroke="#3d4c5c" strokeWidth={2} />
       <path d="M168 168 H552" stroke="#d5dde3" strokeWidth={3} />
       <path d="M120 250 H600" stroke="#4e5d6d" strokeWidth={2} opacity={0.45} />
@@ -160,21 +151,25 @@ function Ranch({ location }: { location: UnitLocation | null }) {
           <path d="M191 292 V378" stroke="#0b6e8a" strokeWidth={1.5} />
         </g>
       ) : null}
+      {location === "utility" ? (
+        <rect x={300} y={292} width={90} height={70} rx={3} fill="#e7f7fc" stroke="#0b6e8a" strokeWidth={2} />
+      ) : null}
       {location === "attic" ? <AirHandler x={353} y={206} /> : null}
       {location === "closet" ? <AirHandler x={158} y={318} /> : null}
+      {location === "utility" ? <AirHandler x={314} y={308} /> : null}
       {location === "garage" ? <AirHandler x={448} y={328} /> : null}
+      <Condenser {...condenserAt(condenser, { x: 36, y: 318 }, { x: 36, y: 248 }, { x: 280, y: 148 })} />
     </g>
   );
 }
 
-function TwoStory({ location }: { location: UnitLocation | null }) {
+function TwoStory({ location, condenser }: { location: UnitLocation | null; condenser: CondenserSitting | null }) {
   const attic = location === "attic";
   const closet = location === "closet";
   const garage = location === "garage";
   return (
     <g>
       <Palm x={40} y={300} scale={0.9} />
-      <Condenser x={560} y={330} />
       <path d="M188 176 L330 78 L500 176 Z" fill="#5e6e80" stroke="#3d4c5c" strokeWidth={2} />
       <path d="M250 140 H430" stroke="#4e5d6d" strokeWidth={2} opacity={0.4} />
       {attic ? <path d="M286 150 L330 104 L392 150 Z" fill="#f4ecdf" stroke="#0b6e8a" strokeWidth={2} /> : null}
@@ -190,21 +185,25 @@ function TwoStory({ location }: { location: UnitLocation | null }) {
       <Door x={330} y={322} />
       <Window x={400} y={312} />
       {closet ? <rect x={220} y={304} width={78} height={78} rx={3} fill="#e7f7fc" stroke="#0b6e8a" strokeWidth={2} /> : null}
+      {location === "utility" ? (
+        <rect x={360} y={300} width={80} height={70} rx={3} fill="#e7f7fc" stroke="#0b6e8a" strokeWidth={2} />
+      ) : null}
       {location === "attic" ? <AirHandler x={308} y={108} /> : null}
       {location === "closet" ? <AirHandler x={228} y={328} /> : null}
+      {location === "utility" ? <AirHandler x={370} y={316} /> : null}
       {location === "garage" ? <AirHandler x={124} y={318} /> : null}
+      <Condenser {...condenserAt(condenser, { x: 560, y: 330 }, { x: 520, y: 230 }, { x: 390, y: 72 })} />
     </g>
   );
 }
 
-function Townhome({ location }: { location: UnitLocation | null }) {
+function Townhome({ location, condenser }: { location: UnitLocation | null; condenser: CondenserSitting | null }) {
   const attic = location === "attic";
   const closet = location === "closet";
   const garage = location === "garage";
   return (
     <g>
       <Palm x={48} y={310} scale={0.85} />
-      <Condenser x={130} y={336} />
       <g opacity={0.38}>
         <path d="M470 196 L560 130 L650 196 Z" fill="#8ea0b0" />
         <rect x={478} y={196} width={164} height={200} fill="#e4e7ea" stroke="#8ea0b0" strokeWidth={2} />
@@ -220,9 +219,14 @@ function Townhome({ location }: { location: UnitLocation | null }) {
       <Door x={292} y={322} h={72} />
       <GarageDoor x={350} y={318} w={84} h={68} />
       {closet ? <rect x={286} y={214} width={70} height={70} rx={3} fill="#e7f7fc" stroke="#0b6e8a" strokeWidth={2} /> : null}
+      {location === "utility" ? (
+        <rect x={360} y={214} width={70} height={70} rx={3} fill="#e7f7fc" stroke="#0b6e8a" strokeWidth={2} />
+      ) : null}
       {location === "attic" ? <AirHandler x={328} y={118} /> : null}
       {location === "closet" ? <AirHandler x={290} y={228} /> : null}
+      {location === "utility" ? <AirHandler x={364} y={228} /> : null}
       {location === "garage" ? <AirHandler x={360} y={332} /> : null}
+      <Condenser {...condenserAt(condenser, { x: 130, y: 336 }, { x: 150, y: 240 }, { x: 330, y: 78 })} />
     </g>
   );
 }
@@ -239,11 +243,11 @@ function EmptyHouse() {
   );
 }
 
-export function HouseGraphic({ home, location = null, sqft = null, compact = false, className }: HouseGraphicProps) {
+export function HouseGraphic({ home, location = null, condenser = null, compact = false, className }: HouseGraphicProps) {
   const label = [
     home ? HOME_LABEL[home] : "Home not chosen",
     location ? LOCATION_LABEL[location] : null,
-    sqft ? formatSqft(sqft) : null,
+    condenser ? CONDENSER_LABEL[condenser] : null,
   ]
     .filter(Boolean)
     .join(", ");
@@ -258,18 +262,10 @@ export function HouseGraphic({ home, location = null, sqft = null, compact = fal
       >
         <rect width={720} height={470} fill={compact ? "transparent" : "#f3fbfd"} rx={compact ? 0 : 24} />
         <Ground />
-        {home === "ranch" ? <Ranch location={compact ? null : location} /> : null}
-        {home === "two-story" ? <TwoStory location={compact ? null : location} /> : null}
-        {home === "townhome" ? <Townhome location={compact ? null : location} /> : null}
+        {home === "single" ? <Ranch location={compact ? null : location} condenser={compact ? null : condenser} /> : null}
+        {home === "multi-story" ? <TwoStory location={compact ? null : location} condenser={compact ? null : condenser} /> : null}
+        {home === "multi-family" ? <Townhome location={compact ? null : location} condenser={compact ? null : condenser} /> : null}
         {home == null ? <EmptyHouse /> : null}
-        {!compact && home && sqft ? (
-          <SqftLine
-            sqft={sqft}
-            x1={home === "townhome" ? 250 : 120}
-            x2={home === "townhome" ? 470 : 600}
-            y={438}
-          />
-        ) : null}
       </svg>
       {!compact && home ? (
         <figcaption className="mt-3 flex flex-wrap gap-2 text-sm text-steel">
@@ -279,8 +275,13 @@ export function HouseGraphic({ home, location = null, sqft = null, compact = fal
               {LOCATION_LABEL[location]}
             </span>
           ) : (
-            <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">Indoor unit not placed yet</span>
+            <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">Air handler not placed yet</span>
           )}
+          {condenser ? (
+            <span className="rounded-full bg-foam px-3 py-1 font-medium text-cyan-deep ring-1 ring-cyan/40">
+              {CONDENSER_LABEL[condenser]}
+            </span>
+          ) : null}
         </figcaption>
       ) : null}
     </figure>
@@ -288,20 +289,20 @@ export function HouseGraphic({ home, location = null, sqft = null, compact = fal
 }
 
 export function homeBlurb(home: HomeType): { title: string; body: string } {
-  if (home === "ranch") {
+  if (home === "single") {
     return {
-      title: "Single-story ranch",
-      body: "Wide footprint, one attic. The plan we see most often around Orlando.",
+      title: "Single Story Home",
+      body: "A standalone home with all living areas on one floor. The outdoor unit is typically at ground level with the indoor air handler in the closet, utility room, garage, or attic.",
     };
   }
-  if (home === "two-story") {
+  if (home === "multi-story") {
     return {
-      title: "Two-story",
-      body: "More wall area and a longer line set. Usually a larger system than a ranch of the same square footage.",
+      title: "Multi-Story Home",
+      body: "A standalone home with living areas on multiple floors. The outdoor unit is typically at ground level, with the indoor air handler in the closet, utility room, garage, or attic.",
     };
   }
   return {
-    title: "Townhome",
-    body: "Shared walls and a smaller footprint. The air handler is often in a closet.",
+    title: "Multi-Family Home",
+    body: "This includes townhomes, duplexes, triplexes, condos, or larger residential properties. Equipment may be separate or shared, line sets can differ, and the outdoor unit may be on the roof or in a designated equipment area.",
   };
 }

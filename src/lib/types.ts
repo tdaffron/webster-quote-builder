@@ -1,14 +1,20 @@
-export const HOME_TYPES = ["ranch", "two-story", "townhome"] as const;
+export const HOME_TYPES = ["single", "multi-story", "multi-family"] as const;
 export type HomeType = (typeof HOME_TYPES)[number];
 
-export const UNIT_LOCATIONS = ["attic", "closet", "garage"] as const;
+export const UNIT_LOCATIONS = ["closet", "utility", "garage", "attic"] as const;
 export type UnitLocation = (typeof UNIT_LOCATIONS)[number];
+
+export const CONDENSER_SITTINGS = ["ground", "mounted", "rooftop"] as const;
+export type CondenserSitting = (typeof CONDENSER_SITTINGS)[number];
 
 export const TIER_IDS = ["good", "better", "best"] as const;
 export type TierId = (typeof TIER_IDS)[number];
 
-export const HEAT_STRIPS = ["none", "5", "8", "10"] as const;
-export type HeatStripId = (typeof HEAT_STRIPS)[number];
+export const HEAT_SOURCES = ["heat-pump", "electric", "gas"] as const;
+export type HeatSource = (typeof HEAT_SOURCES)[number];
+
+export const AIR_QUALITY = ["none", "scrubber", "reme", "uv"] as const;
+export type AirQualityId = (typeof AIR_QUALITY)[number];
 
 export const THERMOSTATS = ["standard", "wifi", "premium"] as const;
 export type ThermostatId = (typeof THERMOSTATS)[number];

@@ -19,7 +19,6 @@ export function StepLead({
   errors,
   summary,
   priceLabel,
-  monthlyLabel,
   submitting,
   submitError,
   onChange,
@@ -29,7 +28,6 @@ export function StepLead({
   errors: LeadErrors;
   summary: string[];
   priceLabel: string;
-  monthlyLabel: string;
   submitting: boolean;
   submitError: string | null;
   onChange: (patch: Partial<LeadInput>) => void;
@@ -37,15 +35,20 @@ export function StepLead({
 }) {
   return (
     <div className="step-in">
-      <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Where should we send the detailed quote?</h1>
+      <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Let’s Make Your Comfort Plan Official!</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-steel">
-        A comfort advisor calls, confirms the house, and turns this range into a written quote. No deposit on this form.
+        You’ve explored your options, and now we’d love to get to know you! Share your contact information and a few details about your home so our team can help you take the next step. Since every home is unique, an on-site evaluation is needed to provide an accurate, personalized quote.
       </p>
 
-      <div className="mt-5 rounded-2xl bg-foam px-4 py-3 text-sm text-ink ring-1 ring-cyan/30">
-        <p className="font-semibold">
-          {priceLabel} · {monthlyLabel}/mo
+      <div className="mt-5 rounded-2xl bg-white p-5 ring-1 ring-slate-200">
+        <p className="font-heading text-lg font-bold text-ink">Your Home. Your Comfort. No Pressure.</p>
+        <p className="mt-2 text-sm leading-6 text-steel">
+          At Webster Air Conditioning & Heating, we’re here to help you make informed decisions about your home’s comfort. Our employees don’t work on commission, so you can feel confident knowing our focus is on finding the right solution for you—not pushing a sale. We’ll only use your contact information to assist with your system selections and next steps. No spam. No sales pressure. Just honest, dependable service.
         </p>
+      </div>
+
+      <div className="mt-5 rounded-2xl bg-foam px-4 py-3 text-sm text-ink ring-1 ring-cyan/30">
+        <p className="font-semibold">{priceLabel}</p>
         <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-steel">
           {summary.map((item) => (
             <li key={item}>{item}</li>
@@ -169,7 +172,7 @@ export function StepLead({
         ) : null}
 
         <Button type="submit" disabled={submitting} className="h-12 rounded-full px-6 text-base font-semibold">
-          {submitting ? "Sending…" : "Request my detailed quote"}
+          {submitting ? "Sending…" : "Submit My Comfort Plan"}
         </Button>
       </form>
     </div>
@@ -224,14 +227,14 @@ export function LeadConfirmation({
       <h1 className="mt-4 font-heading text-3xl font-bold text-ink">You’re on the schedule list</h1>
       <p className="mx-auto mt-3 max-w-lg text-base leading-7 text-steel">
         Thanks, {name.split(" ")[0]}. A Webster comfort advisor will call to turn the {priceLabel} range into a written quote. Your reference is{" "}
-        <span className="font-semibold text-ink">{reference}</span>.
+        <span className="font-semibold whitespace-nowrap text-ink">{reference}</span>.
       </p>
       <p className="mt-4 text-sm text-steel">
         Rather not wait? Call{" "}
         <a href="tel:+14072950598" className="font-semibold text-cyan-deep">
           (407) 295-0598
         </a>{" "}
-        and mention {reference}.
+        and mention <span className="whitespace-nowrap">{reference}</span>.
       </p>
       <Button type="button" variant="outline" onClick={onReset} className="mt-6 h-11 rounded-full px-5">
         Price another home

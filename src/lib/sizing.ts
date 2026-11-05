@@ -3,9 +3,9 @@ import { STANDARD_TONS, type HomeType, type StandardTons } from "@/lib/types";
 
 /** Cooled square feet per ton. A stand-in for Manual J, not a load calculation. */
 export const SQFT_PER_TON: Record<HomeType, number> = {
-  ranch: 450,
-  "two-story": 420,
-  townhome: 500,
+  single: 450,
+  "multi-story": 420,
+  "multi-family": 500,
 };
 
 export type SizingAdvice = {

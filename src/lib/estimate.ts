@@ -1,13 +1,6 @@
 import { PRICE_BOOK } from "@/lib/pricing";
 import { nearestTons } from "@/lib/sizing";
-import type {
-  HeatStripId,
-  HomeType,
-  StandardTons,
-  ThermostatId,
-  TierId,
-  UnitLocation,
-} from "@/lib/types";
+import type { AirQualityId, HomeType, StandardTons, ThermostatId, TierId, UnitLocation } from "@/lib/types";
 
 export type QuoteLine = {
   id: string;
@@ -22,8 +15,6 @@ export type Quote = {
   tier: TierId | null;
   low: number;
   high: number;
-  monthlyLow: number;
-  monthlyHigh: number;
   lines: QuoteLine[];
   wide: boolean;
 };
@@ -33,15 +24,11 @@ export type QuoteInput = {
   location: UnitLocation | null;
   tons: number;
   tier: TierId | null;
-  heatStrip: HeatStripId;
   thermostat: ThermostatId;
+  airQuality: AirQualityId;
 };
 
-export function monthlyPayment(
-  principal: number,
-  apr: number = PRICE_BOOK.financing.apr,
-  months: number = PRICE_BOOK.financing.termMonths,
-): number {
+export function monthlyPayment(principal: number, apr = 0.0999, months = 60): number {
   if (principal <= 0) return 0;
   const monthlyRate = apr / 12;
   if (monthlyRate === 0) return principal / months;
@@ -55,17 +42,17 @@ function band(table: Record<StandardTons, readonly [number, number]>, tons: Stan
 }
 
 function thermostatCharge(tier: TierId | null, thermostat: ThermostatId): [number, number] {
-  if (tier === "best") return [0, 0];
+  if (tier === "best" && thermostat === "premium") return [0, 0];
   const range = PRICE_BOOK.thermostats[thermostat].range;
   return [range[0], range[1]];
 }
 
 export function buildQuote(input: QuoteInput): Quote {
   const tons = nearestTons(input.tons);
-  const strip = PRICE_BOOK.heatStrips[input.heatStrip];
   const thermo = PRICE_BOOK.thermostats[input.thermostat];
   const story = PRICE_BOOK.stories[input.home];
   const location = input.location ? PRICE_BOOK.locations[input.location] : null;
+  const air = PRICE_BOOK.airQuality[input.airQuality];
 
   const equipment: [number, number] = input.tier
     ? band(PRICE_BOOK.tiers[input.tier].byTons, tons)
@@ -73,18 +60,19 @@ export function buildQuote(input: QuoteInput): Quote {
 
   const thermoRange = thermostatCharge(input.tier, input.thermostat);
   const thermoDetail =
-    input.tier === "best"
-      ? "Included with Best."
-      : thermoRange[0] === 0
-        ? "Included."
-        : thermo.detail;
+    thermoRange[0] === 0
+      ? input.tier === "best" && input.thermostat === "premium"
+        ? "Included with Premium."
+        : "Included."
+      : thermo.detail;
 
   const lines: QuoteLine[] = [
     {
       id: "equipment",
       label: input.tier
         ? `${PRICE_BOOK.tiers[input.tier].name} · ${PRICE_BOOK.tiers[input.tier].brand} equipment and install`
-        : "Equipment and install, Good through Best",
+        : "Equipment and install, Basic through Premium",
+      detail: "Includes the heat strip.",
       low: equipment[0],
       high: equipment[1],
     },
@@ -110,13 +98,15 @@ export function buildQuote(input: QuoteInput): Quote {
     });
   }
 
-  lines.push({
-    id: "strip",
-    label: strip.kw === 0 ? "No heat strip" : `${strip.label} heat strip`,
-    detail: strip.detail,
-    low: strip.range[0],
-    high: strip.range[1],
-  });
+  if (air.range[0] > 0 || air.range[1] > 0) {
+    lines.push({
+      id: "air",
+      label: air.label,
+      detail: air.detail,
+      low: air.range[0],
+      high: air.range[1],
+    });
+  }
 
   lines.push({
     id: "thermostat",
@@ -134,8 +124,6 @@ export function buildQuote(input: QuoteInput): Quote {
     tier: input.tier,
     low,
     high,
-    monthlyLow: Math.round(monthlyPayment(low)),
-    monthlyHigh: Math.round(monthlyPayment(high)),
     lines,
     wide: input.tier == null,
   };

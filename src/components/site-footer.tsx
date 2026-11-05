@@ -20,8 +20,8 @@ export function SiteFooter() {
         </div>
         <div className="text-sm leading-7 text-white/80">
           <p className="font-heading text-base font-bold text-white">Visit or call</p>
-          <p>6828 W Livingston St</p>
-          <p>Orlando, FL 32835</p>
+          <p>3400 Old Winter Garden Road</p>
+          <p>Orlando, FL 32805</p>
           <p>
             <a href="tel:+14072950598" className="text-cyan hover:underline">
               (407) 295-0598
@@ -37,7 +37,7 @@ export function SiteFooter() {
           <p className="font-heading text-base font-bold text-white">This demo</p>
           <p>Prices are placeholders. Swap the book in the pricing file when Webster’s numbers are ready.</p>
           <p>License CAC1819524</p>
-          <p>Photo reading on the data-plate step is simulated.</p>
+          <p>Typed Trane, Carrier, and Goodman model numbers still decode. Plate photos are not part of this version.</p>
         </div>
       </div>
     </footer>

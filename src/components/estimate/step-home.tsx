@@ -5,9 +5,9 @@ import { HOME_TYPES, type HomeType } from "@/lib/types";
 export function StepHome({ home, onChange }: { home: HomeType | null; onChange: (home: HomeType) => void }) {
   return (
     <div className="step-in">
-      <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Which home are we cooling?</h1>
+      <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Let’s get to know your home</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-steel">
-        Orlando houses don’t all take the same system. Start with the one that looks most like yours. You can change it later.
+        Every home has different cooling needs. Tell us a little about yours and we will help narrow down the right options.
       </p>
       <div className="mt-6 grid gap-4 md:grid-cols-3">
         {HOME_TYPES.map((type) => {

@@ -117,29 +117,29 @@ describe("serial ages", () => {
 
 describe("allowed sizes", () => {
   it("starts a 1,800 sq ft ranch at 4 tons and allows a neighbor", () => {
-    const advice = sizingAdvice(1800, "ranch", null);
+    const advice = sizingAdvice(1800, "single", null);
     assert.equal(advice.recommended, 4);
     assert.deepEqual(advice.allowed, [3.5, 4]);
     assert.equal(advice.secondSystem, false);
   });
 
   it("calls out an oversized existing unit", () => {
-    const advice = sizingAdvice(1600, "ranch", 5);
+    const advice = sizingAdvice(1600, "single", 5);
     assert.equal(advice.recommended, 3.5);
     assert.match(advice.note, /5 tons/);
     assert.match(advice.note, /humidity/);
   });
 
   it("flags a house that needs a second system", () => {
-    const advice = sizingAdvice(4000, "ranch", null);
+    const advice = sizingAdvice(4000, "single", null);
     assert.equal(advice.secondSystem, true);
     assert.equal(advice.recommended, 5);
     assert.ok(advice.allowed.every((tons) => tons <= 5));
   });
 
   it("gives a townhome a smaller recommendation than a two-story at the same size", () => {
-    const town = sizingAdvice(1800, "townhome", null);
-    const two = sizingAdvice(1800, "two-story", null);
+    const town = sizingAdvice(1800, "multi-family", null);
+    const two = sizingAdvice(1800, "multi-story", null);
     assert.ok(town.recommended < two.recommended);
   });
 });
@@ -149,28 +149,26 @@ describe("placeholder pricing", () => {
     for (const tier of ["good", "better", "best"] as const) {
       for (const tons of STANDARD_TONS) {
         const quote = buildQuote({
-          home: "ranch",
+          home: "single",
           location: "closet",
           tons,
           tier,
-          heatStrip: "none",
           thermostat: "standard",
+          airQuality: "none",
         });
         assert.equal(quote.low, PRICE_BOOK.tiers[tier].byTons[tons][0]);
         assert.equal(quote.high, PRICE_BOOK.tiers[tier].byTons[tons][1]);
-        assert.ok(quote.monthlyLow > 0);
-        assert.ok(quote.monthlyHigh >= quote.monthlyLow);
       }
     }
   });
 
-  it("steps the price up from Good to Best and adds attic and heat-strip cost", () => {
+  it("steps the price up from Basic to Premium and adds attic and air-quality cost", () => {
     const base = {
-      home: "ranch" as const,
+      home: "single" as const,
       location: "closet" as const,
       tons: 3,
-      heatStrip: "5" as const,
       thermostat: "standard" as const,
+      airQuality: "none" as const,
     };
     const good = buildQuote({ ...base, tier: "good" });
     const better = buildQuote({ ...base, tier: "better" });
@@ -182,60 +180,64 @@ describe("placeholder pricing", () => {
     assert.ok(attic.low > better.low);
     assert.ok(attic.lines.some((line) => line.id === "location"));
 
-    const strip = buildQuote({ ...base, tier: "better", heatStrip: "10" });
-    assert.ok(strip.low > better.low);
+    const air = buildQuote({ ...base, tier: "better", airQuality: "uv" });
+    assert.ok(air.low > better.low);
   });
 
-  it("includes the communicating thermostat on Best and charges for it on Good", () => {
+  it("includes the communicating thermostat on Premium and charges for it on Basic", () => {
     const good = buildQuote({
-      home: "ranch",
+      home: "single",
       location: "closet",
       tons: 3,
       tier: "good",
-      heatStrip: "none",
       thermostat: "premium",
+      airQuality: "none",
     });
-    const best = buildQuote({
-      home: "ranch",
-      location: "closet",
+    const premiumInput = {
+      home: "single" as const,
+      location: "closet" as const,
       tons: 3,
-      tier: "best",
-      heatStrip: "none",
-      thermostat: "premium",
-    });
+      tier: "best" as const,
+      thermostat: "premium" as const,
+      airQuality: "none" as const,
+    };
+    const best = buildQuote(premiumInput);
     assert.ok(good.lines.find((line) => line.id === "thermostat")!.low > 0);
     assert.equal(best.lines.find((line) => line.id === "thermostat")!.low, 0);
     assert.ok(best.low > good.high);
+
+    const wifiOnPremium = buildQuote({ ...premiumInput, thermostat: "wifi" });
+    assert.ok(wifiOnPremium.lines.find((line) => line.id === "thermostat")!.low > 0);
   });
 
-  it("adds two-story labor without changing a closet ranch", () => {
+  it("adds multi-story labor without changing a closet single-story home", () => {
     const ranch = buildQuote({
-      home: "ranch",
+      home: "single",
       location: "closet",
       tons: 3,
       tier: "better",
-      heatStrip: "5",
       thermostat: "wifi",
+      airQuality: "none",
     });
-    const two = buildQuote({ ...{
-      home: "two-story" as const,
-      location: "closet" as const,
+    const two = buildQuote({
+      home: "multi-story",
+      location: "closet",
       tons: 3,
-      tier: "better" as const,
-      heatStrip: "5" as const,
-      thermostat: "wifi" as const,
-    }});
-    assert.ok(two.low === ranch.low + PRICE_BOOK.stories["two-story"].range[0]);
+      tier: "better",
+      thermostat: "wifi",
+      airQuality: "none",
+    });
+    assert.ok(two.low === ranch.low + PRICE_BOOK.stories["multi-story"].range[0]);
   });
 
-  it("spans Good through Best when a tier is not chosen yet", () => {
+  it("spans Basic through Premium when a tier is not chosen yet", () => {
     const wide = buildQuote({
-      home: "ranch",
+      home: "single",
       location: null,
       tons: 3,
       tier: null,
-      heatStrip: "none",
       thermostat: "standard",
+      airQuality: "none",
     });
     assert.equal(wide.wide, true);
     assert.equal(wide.low, PRICE_BOOK.tiers.good.byTons[3][0]);

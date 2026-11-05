@@ -1,92 +1,60 @@
 import { ChoiceButton } from "@/components/estimate/choice";
-import { formatSqft } from "@/lib/format";
-import type { UnitLocation } from "@/lib/types";
-import { Slider } from "@/components/ui/slider";
+import { CONDENSER_SITTINGS, UNIT_LOCATIONS, type CondenserSitting, type UnitLocation } from "@/lib/types";
 
-const LOCATIONS: { id: UnitLocation; title: string; body: string }[] = [
-  {
-    id: "attic",
-    title: "Attic",
-    body: "Common on slab ranches. Access, a platform, and the drain line add labor.",
-  },
-  {
-    id: "closet",
-    title: "Hall or utility closet",
-    body: "The easiest swap. Short line set, and we can stand in front of the unit.",
-  },
-  {
-    id: "garage",
-    title: "Garage",
-    body: "Often an end unit or an older home. Extra line-set work to get back inside.",
-  },
-];
+const HANDLER: Record<UnitLocation, { title: string; body: string }> = {
+  closet: { title: "Closet", body: "The shortest swap. We can stand in front of the air handler." },
+  utility: { title: "Utility room", body: "A dedicated room, usually on the first floor." },
+  garage: { title: "Garage", body: "Extra line-set work to get from the garage back inside." },
+  attic: { title: "Attic", body: "Access, a platform, and the drain line add labor." },
+};
 
-const PRESETS = [1200, 1600, 2000, 2600, 3200];
+const CONDENSER: Record<CondenserSitting, { title: string; body: string }> = {
+  ground: { title: "Ground level", body: "Sitting on a pad beside the house. The most common spot." },
+  mounted: { title: "Mounted", body: "Raised off the ground, on a stand or a wall bracket." },
+  rooftop: { title: "Rooftop", body: "On the roof or in a designated equipment area." },
+};
 
 export function StepSetup({
   location,
-  sqft,
+  condenser,
   onLocation,
-  onSqft,
+  onCondenser,
 }: {
   location: UnitLocation | null;
-  sqft: number;
+  condenser: CondenserSitting | null;
   onLocation: (location: UnitLocation) => void;
-  onSqft: (sqft: number) => void;
+  onCondenser: (condenser: CondenserSitting) => void;
 }) {
   return (
     <div className="step-in">
-      <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Where does the system sit today?</h1>
+      <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Your Home’s Current System Setup</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-steel">
-        The indoor unit’s location changes the labor. Square footage sets the size we’d start with. The drawing updates as you answer.
+        Every home is a little different! Where your current indoor and outdoor equipment are located can impact installation costs. Let’s start with where your air handler and condenser are located today. Choose the closest match below. The drawing will update as you answer.
       </p>
 
-      <div className="mt-6 grid gap-3">
-        {LOCATIONS.map((item) => (
-          <ChoiceButton key={item.id} selected={location === item.id} onClick={() => onLocation(item.id)} className="px-4 py-3">
-            <span className="font-heading text-lg font-bold text-ink">{item.title}</span>
-            <span className="mt-1 block text-sm leading-6 text-steel">{item.body}</span>
-          </ChoiceButton>
-        ))}
-      </div>
-
-      <div className="mt-8 rounded-2xl bg-white p-5 ring-1 ring-slate-200">
-        <div className="flex items-end justify-between gap-3">
-          <label htmlFor="sqft" className="font-heading text-lg font-bold text-ink">
-            Cooled square footage
-          </label>
-          <p className="font-heading text-2xl font-bold text-cyan-deep tabular-nums">{formatSqft(sqft)}</p>
-        </div>
-        <p className="mt-1 text-sm leading-6 text-steel">Living area only. Leave out the garage, lanai, and attic. A guess is fine.</p>
-        <Slider
-          id="sqft"
-          aria-label="Cooled square footage"
-          min={900}
-          max={4200}
-          step={50}
-          value={[sqft]}
-          onValueChange={(value) => onSqft(Array.isArray(value) ? value[0] : value)}
-          className="mt-6"
-        />
-        <div className="mt-2 flex justify-between text-xs text-steel">
-          <span>900</span>
-          <span>4,200</span>
-        </div>
-        <div className="mt-4 flex flex-wrap gap-2">
-          {PRESETS.map((preset) => (
-            <button
-              key={preset}
-              type="button"
-              onClick={() => onSqft(preset)}
-              className={`rounded-full px-3 py-1.5 text-sm font-medium ring-1 transition ${
-                sqft === preset ? "bg-cyan text-ink ring-cyan" : "bg-white text-steel ring-slate-200 hover:ring-cyan"
-              }`}
-            >
-              {formatSqft(preset)}
-            </button>
+      <fieldset className="mt-6">
+        <legend className="font-heading text-lg font-bold text-ink">Air handler</legend>
+        <div className="mt-3 grid gap-3 sm:grid-cols-2">
+          {UNIT_LOCATIONS.map((id) => (
+            <ChoiceButton key={id} selected={location === id} onClick={() => onLocation(id)} className="px-4 py-3">
+              <span className="font-semibold text-ink">{HANDLER[id].title}</span>
+              <span className="mt-1 block text-sm leading-6 text-steel">{HANDLER[id].body}</span>
+            </ChoiceButton>
           ))}
         </div>
-      </div>
+      </fieldset>
+
+      <fieldset className="mt-6">
+        <legend className="font-heading text-lg font-bold text-ink">Condenser</legend>
+        <div className="mt-3 grid gap-3 sm:grid-cols-3">
+          {CONDENSER_SITTINGS.map((id) => (
+            <ChoiceButton key={id} selected={condenser === id} onClick={() => onCondenser(id)} className="px-4 py-3">
+              <span className="font-semibold text-ink">{CONDENSER[id].title}</span>
+              <span className="mt-1 block text-sm leading-6 text-steel">{CONDENSER[id].body}</span>
+            </ChoiceButton>
+          ))}
+        </div>
+      </fieldset>
     </div>
   );
 }

@@ -16,6 +16,9 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: ["127.0.0.1", "localhost", "*.agent.cvm.dev", "**.agent.cvm.dev"],
   devIndicators: false,
   cacheComponents: false,
+  experimental: {
+    agentUpgrade: "security",
+  },
   turbopack: {
     rules: {
       "*.css": {

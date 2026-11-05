@@ -29,7 +29,7 @@ export function StepSetup({
     <div className="step-in">
       <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Your Home’s Current System Setup</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-steel">
-        Every home is a little different! Where your current indoor and outdoor equipment are located can impact installation costs. Let’s start with where your air handler and condenser are located today. Choose the closest match below.
+        Every home is a little different! Where your current indoor and outdoor equipment are located can impact installation costs. Let’s start with where your air handler and condenser are located today. Choose the closest match below. The drawing will update as you answer.
       </p>
 
       <fieldset className="mt-6">

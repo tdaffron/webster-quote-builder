@@ -35,6 +35,48 @@ const CONDENSER_LABEL: Record<CondenserSitting, string> = {
   rooftop: "Rooftop condenser",
 };
 
+type Spot = { left: string; top: string };
+
+/** Centers, as a percent of each house drawing. */
+const HANDLER_SPOT: Record<HomeType, Record<UnitLocation, Spot>> = {
+  single: {
+    closet: { left: "46%", top: "56%" },
+    utility: { left: "70%", top: "56%" },
+    garage: { left: "26%", top: "57%" },
+    attic: { left: "48%", top: "34%" },
+  },
+  "multi-story": {
+    closet: { left: "48%", top: "24%" },
+    utility: { left: "42%", top: "55%" },
+    garage: { left: "18%", top: "56%" },
+    attic: { left: "56%", top: "14%" },
+  },
+  "multi-family": {
+    closet: { left: "42%", top: "40%" },
+    utility: { left: "58%", top: "40%" },
+    garage: { left: "58%", top: "68%" },
+    attic: { left: "48%", top: "24%" },
+  },
+};
+
+const CONDENSER_SPOT: Record<HomeType, Record<CondenserSitting, Spot>> = {
+  single: {
+    ground: { left: "6%", top: "62%" },
+    mounted: { left: "8%", top: "50%" },
+    rooftop: { left: "78%", top: "36%" },
+  },
+  "multi-story": {
+    ground: { left: "92%", top: "62%" },
+    mounted: { left: "90%", top: "40%" },
+    rooftop: { left: "80%", top: "16%" },
+  },
+  "multi-family": {
+    ground: { left: "34%", top: "82%" },
+    mounted: { left: "36%", top: "55%" },
+    rooftop: { left: "46%", top: "16%" },
+  },
+};
+
 export function HouseGraphic({ home, location = null, condenser = null, compact = false, className }: HouseGraphicProps) {
   const label = [
     home ? HOME_LABEL[home] : "Home not chosen",
@@ -47,14 +89,16 @@ export function HouseGraphic({ home, location = null, condenser = null, compact 
   return (
     <figure className={cn("m-0", className)}>
       {home ? (
-        // eslint-disable-next-line @next/next/no-img-element
-        <img
-          src={publicPath(HOME_ART[home])}
-          alt={label}
-          width={1408}
-          height={768}
-          className="h-auto w-full bg-white"
-        />
+        <div className="relative bg-white">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={publicPath(HOME_ART[home])} alt={label} width={1408} height={768} className="h-auto w-full" />
+          {!compact && location ? (
+            <Equipment art="/homes/air-handler.png" label={LOCATION_LABEL[location]} spot={HANDLER_SPOT[home][location]} width="5.2%" />
+          ) : null}
+          {!compact && condenser ? (
+            <Equipment art="/homes/condenser.png" label={CONDENSER_LABEL[condenser]} spot={CONDENSER_SPOT[home][condenser]} width="6.2%" />
+          ) : null}
+        </div>
       ) : (
         <div
           role="img"
@@ -82,6 +126,20 @@ export function HouseGraphic({ home, location = null, condenser = null, compact 
         </figcaption>
       ) : null}
     </figure>
+  );
+}
+
+function Equipment({ art, label, spot, width }: { art: string; label: string; spot: Spot; width: string }) {
+  return (
+    // eslint-disable-next-line @next/next/no-img-element
+    <img
+      src={publicPath(art)}
+      alt=""
+      aria-hidden
+      title={label}
+      className="pointer-events-none absolute max-w-none -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_2px_2px_rgba(36,48,56,0.25)] transition-[left,top] duration-500 ease-out"
+      style={{ left: spot.left, top: spot.top, width }}
+    />
   );
 }
 

@@ -93,10 +93,10 @@ export function HouseGraphic({ home, location = null, condenser = null, compact 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={publicPath(HOME_ART[home])} alt={label} width={1408} height={768} className="h-auto w-full" />
           {!compact && location ? (
-            <Equipment art="/homes/air-handler.png" label={LOCATION_LABEL[location]} spot={HANDLER_SPOT[home][location]} width="5.2%" />
+            <Equipment art="/homes/air-handler.png" label={LOCATION_LABEL[location]} spot={HANDLER_SPOT[home][location]} width="7.4%" />
           ) : null}
           {!compact && condenser ? (
-            <Equipment art="/homes/condenser.png" label={CONDENSER_LABEL[condenser]} spot={CONDENSER_SPOT[home][condenser]} width="6.2%" />
+            <Equipment art="/homes/condenser.png" label={CONDENSER_LABEL[condenser]} spot={CONDENSER_SPOT[home][condenser]} width="8.4%" />
           ) : null}
         </div>
       ) : (
@@ -137,7 +137,7 @@ function Equipment({ art, label, spot, width }: { art: string; label: string; sp
       alt=""
       aria-hidden
       title={label}
-      className="pointer-events-none absolute max-w-none -translate-x-1/2 -translate-y-1/2 drop-shadow-[0_2px_2px_rgba(36,48,56,0.25)] transition-[left,top] duration-500 ease-out"
+      className="pointer-events-none absolute max-w-none -translate-x-1/2 -translate-y-1/2 transition-[left,top] duration-500 ease-out"
       style={{ left: spot.left, top: spot.top, width }}
     />
   );

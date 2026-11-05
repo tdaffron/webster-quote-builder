@@ -4,8 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { DecodedPlate } from "@/lib/decoder";
 import { formatTons } from "@/lib/format";
-import { HEAT_SOURCES, STANDARD_TONS, TIER_IDS, type HeatSource, type StandardTons, type TierId } from "@/lib/types";
-import { PRICE_BOOK } from "@/lib/pricing";
+import { HEAT_SOURCES, STANDARD_TONS, type HeatSource, type StandardTons } from "@/lib/types";
 
 const HEAT_LABEL: Record<HeatSource, string> = {
   "heat-pump": "Heat Pump",
@@ -20,14 +19,12 @@ export function StepCustomize({
   tons,
   heat,
   heatConfirmed,
-  tier,
   showHelp,
   onModel,
   onSerial,
   onTons,
   onHeat,
   onConfirmHeat,
-  onTier,
   onToggleHelp,
 }: {
   model: string;
@@ -36,14 +33,12 @@ export function StepCustomize({
   tons: StandardTons | null;
   heat: HeatSource | null;
   heatConfirmed: boolean;
-  tier: TierId | null;
   showHelp: boolean;
   onModel: (value: string) => void;
   onSerial: (value: string) => void;
   onTons: (tons: StandardTons) => void;
   onHeat: (heat: HeatSource) => void;
   onConfirmHeat: (keep: boolean) => void;
-  onTier: (tier: TierId) => void;
   onToggleHelp: () => void;
 }) {
   const needsCheck = heat === "electric" || heat === "gas";
@@ -51,7 +46,7 @@ export function StepCustomize({
     <div className="step-in">
       <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Let’s Customize Your Comfort</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-steel">
-        Select your current system size, what heats your home, and explore desired energy efficiency options to find the right fit for your home’s comfort needs.
+        Select your current system size and what heats your home. You’ll compare efficiency on the next step.
       </p>
 
       <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -126,18 +121,6 @@ export function StepCustomize({
             </div>
           </div>
         ) : null}
-      </fieldset>
-
-      <fieldset className="mt-6">
-        <legend className="font-heading text-lg font-bold text-ink">Efficiency</legend>
-        <div className="mt-3 grid gap-3 sm:grid-cols-3">
-          {TIER_IDS.map((id) => (
-            <ChoiceButton key={id} selected={tier === id} onClick={() => onTier(id)} className="px-4 py-3">
-              <span className="font-heading text-xl font-bold text-cyan-deep">{PRICE_BOOK.tiers[id].dollarSigns}</span>
-              <span className="mt-1 block font-semibold text-ink">{PRICE_BOOK.tiers[id].name}</span>
-            </ChoiceButton>
-          ))}
-        </div>
       </fieldset>
     </div>
   );

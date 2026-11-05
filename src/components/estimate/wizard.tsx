@@ -101,6 +101,7 @@ export function EstimateApp() {
   let maxReachable: StepIndex = 0;
   if (home) maxReachable = 1;
   if (home && location && condenser) maxReachable = 2;
+  if (home && location && condenser && tons && heatReady) maxReachable = 3;
   if (home && location && condenser && tons && heatReady && tier) maxReachable = 5;
 
   function scrollToTool() {
@@ -122,8 +123,8 @@ export function EstimateApp() {
       setBlockError("Tell us where the air handler and the condenser sit.");
       return;
     }
-    if (step === 2 && (!tons || !heat || !tier)) {
-      setBlockError("Choose a system size, a heat source, and an efficiency level.");
+    if (step === 2 && (!tons || !heat)) {
+      setBlockError("Choose a system size and a heat source.");
       return;
     }
     if (step === 2 && heat !== "heat-pump" && !heatConfirmed) {
@@ -255,7 +256,6 @@ export function EstimateApp() {
                 tons={tons}
                 heat={heat}
                 heatConfirmed={heatConfirmed}
-                tier={tier}
                 showHelp={showHelp}
                 onModel={setModel}
                 onSerial={setSerial}
@@ -269,7 +269,6 @@ export function EstimateApp() {
                   else selectHeat("heat-pump");
                   setBlockError(null);
                 }}
-                onTier={selectTier}
                 onToggleHelp={() => setShowHelp((current) => !current)}
               />
             ) : null}

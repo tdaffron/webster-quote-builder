@@ -110,13 +110,13 @@ export function HouseGraphic({ home, location = null, condenser = null, compact 
       )}
       {!compact && home ? (
         <figcaption className="mt-3 flex flex-wrap gap-2 px-1 text-sm text-steel">
-          <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">{HOME_LABEL[home]}</span>
+          <span className="rounded-full bg-white px-3 py-1 ring-1 ring-line">{HOME_LABEL[home]}</span>
           {location ? (
             <span className="rounded-full bg-foam px-3 py-1 font-medium text-cyan-deep ring-1 ring-cyan/40">
               {LOCATION_LABEL[location]}
             </span>
           ) : (
-            <span className="rounded-full bg-white px-3 py-1 ring-1 ring-slate-200">Air handler not placed yet</span>
+            <span className="rounded-full bg-white px-3 py-1 ring-1 ring-line">Air handler not placed yet</span>
           )}
           {condenser ? (
             <span className="rounded-full bg-foam px-3 py-1 font-medium text-cyan-deep ring-1 ring-cyan/40">

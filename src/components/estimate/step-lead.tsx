@@ -40,7 +40,7 @@ export function StepLead({
         You’ve explored your options, and now we’d love to get to know you! Share your contact information and a few details about your home so our team can help you take the next step. Since every home is unique, an on-site evaluation is needed to provide an accurate, personalized quote.
       </p>
 
-      <div className="mt-5 rounded-2xl bg-white p-5 ring-1 ring-slate-200">
+      <div className="mt-5 rounded-2xl bg-white p-5 ring-1 ring-line">
         <p className="font-heading text-lg font-bold text-ink">Your Home. Your Comfort. No Pressure.</p>
         <p className="mt-2 text-sm leading-6 text-steel">
           At Webster Air Conditioning & Heating, we’re here to help you make informed decisions about your home’s comfort. Our employees don’t work on commission, so you can feel confident knowing our focus is on finding the right solution for you—not pushing a sale. We’ll only use your contact information to assist with your system selections and next steps. No spam. No sales pressure. Just honest, dependable service.
@@ -57,7 +57,7 @@ export function StepLead({
       </div>
 
       <form
-        className="mt-5 grid gap-4 rounded-2xl bg-white p-5 ring-1 ring-slate-200"
+        className="mt-5 grid gap-4 rounded-2xl bg-white p-5 ring-1 ring-line"
         onSubmit={(event) => {
           event.preventDefault();
           onSubmit();
@@ -127,7 +127,7 @@ export function StepLead({
                 aria-pressed={lead.time === time}
                 onClick={() => onChange({ time })}
                 className={`h-11 rounded-xl text-sm font-semibold ring-1 transition ${
-                  lead.time === time ? "bg-cyan text-ink ring-cyan" : "bg-white text-steel ring-slate-200 hover:ring-cyan"
+                  lead.time === time ? "bg-cyan-deep text-white ring-cyan-deep" : "bg-white text-steel ring-line hover:ring-cyan"
                 }`}
               >
                 {TIME_LABEL[time]}
@@ -220,13 +220,17 @@ export function LeadConfirmation({
   onReset: () => void;
 }) {
   return (
-    <div className="step-in rounded-2xl bg-white px-6 py-10 text-center ring-1 ring-slate-200">
-      <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-mint text-ink">
+    <div className="step-in rounded-2xl bg-white px-6 py-10 text-center ring-1 ring-line">
+      <span className="mx-auto flex size-14 items-center justify-center rounded-full bg-cyan-deep text-white">
         <Check className="size-7" aria-hidden />
       </span>
       <h1 className="mt-4 font-heading text-3xl font-bold text-ink">You’re on the schedule list</h1>
       <p className="mx-auto mt-3 max-w-lg text-base leading-7 text-steel">
-        Thanks, {name.split(" ")[0]}. A Webster comfort advisor will call to turn the {priceLabel} range into a written quote. Your reference is{" "}
+        Thanks, {name.split(" ")[0]}. Your request is going to{" "}
+        <a href="mailto:info@websterac.com" className="font-semibold text-cyan-deep">
+          info@websterac.com
+        </a>
+        . The sales team will be in contact within 24–48 business hours to turn the {priceLabel} range into a written quote. Your reference is{" "}
         <span className="font-semibold whitespace-nowrap text-ink">{reference}</span>.
       </p>
       <p className="mt-4 text-sm text-steel">

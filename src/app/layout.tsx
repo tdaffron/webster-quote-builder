@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html lang="en" className={`${cabin.variable} ${roboto.variable} h-full antialiased`}>
-      <body className="min-h-full bg-[#f6fafb] font-sans text-ink">{children}</body>
+      <body className="min-h-full bg-[#f4f6f8] font-sans text-ink">{children}</body>
     </html>
   );
 }

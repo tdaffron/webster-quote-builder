@@ -4,7 +4,7 @@ import { publicPath } from "@/lib/public-path";
 export function SiteHeader() {
   return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur">
-      <div className="h-1 bg-gradient-to-r from-cyan to-mint" />
+      <div className="h-1 bg-gradient-to-r from-cyan-deep to-cyan" />
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <a href="#estimate" className="shrink-0">
           <Image

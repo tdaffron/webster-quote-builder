@@ -9,7 +9,7 @@ export function StepPrice({ quote, summary }: { quote: Quote; summary: string })
       <h1 className="font-heading text-3xl font-bold tracking-tight text-ink sm:text-4xl">Your approximate range</h1>
       <p className="mt-3 max-w-2xl text-base leading-7 text-steel">{summary}</p>
 
-      <div className="mt-6 rounded-2xl bg-white p-6 ring-1 ring-slate-200">
+      <div className="mt-6 rounded-2xl bg-white p-6 ring-1 ring-line">
         <p className="text-xs font-semibold tracking-[0.16em] text-cyan-deep uppercase">Installed price</p>
         <p className="mt-2 font-heading text-4xl font-bold tracking-tight text-ink tabular-nums sm:text-5xl">
           {moneyRange(quote.low, quote.high)}
@@ -23,18 +23,18 @@ export function StepPrice({ quote, summary }: { quote: Quote; summary: string })
       </div>
 
       <div className="mt-4 grid gap-4 md:grid-cols-2">
-        <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
+        <div className="rounded-2xl bg-white p-5 ring-1 ring-line">
           <h2 className="font-heading text-lg font-bold text-ink">Price includes</h2>
           <ul className="mt-3 grid gap-2 text-sm leading-6 text-steel">
             {PRICE_BOOK.included.map((item) => (
               <li key={item} className="flex gap-2">
-                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-mint-deep" />
+                <span className="mt-2 size-1.5 shrink-0 rounded-full bg-cyan-deep" />
                 {item}
               </li>
             ))}
           </ul>
         </div>
-        <div className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
+        <div className="rounded-2xl bg-white p-5 ring-1 ring-line">
           <h2 className="font-heading text-lg font-bold text-ink">Confirmed on site</h2>
           <ul className="mt-3 grid gap-2 text-sm leading-6 text-steel">
             {PRICE_BOOK.excluded.map((item) => (

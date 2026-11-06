@@ -23,12 +23,12 @@ export function SiteFooter() {
           <p>3400 Old Winter Garden Road</p>
           <p>Orlando, FL 32805</p>
           <p>
-            <a href="tel:+14072950598" className="text-cyan hover:underline">
+            <a href="tel:+14072950598" className="text-foam hover:underline">
               (407) 295-0598
             </a>
           </p>
           <p>
-            <a href="mailto:info@websterac.com" className="text-cyan hover:underline">
+            <a href="mailto:info@websterac.com" className="text-foam hover:underline">
               info@websterac.com
             </a>
           </p>

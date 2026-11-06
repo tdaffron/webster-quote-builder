@@ -198,7 +198,7 @@ export function EstimateApp() {
       : "";
 
   return (
-    <div className="flex min-h-screen flex-col bg-[#f6fafb] text-ink">
+    <div className="flex min-h-screen flex-col bg-[#f4f6f8] text-ink">
       <SiteHeader />
       <main id="estimate" className="mx-auto w-full max-w-6xl flex-1 scroll-mt-28 px-4 py-8 sm:px-6">
         {step > 0 ? (
@@ -213,7 +213,7 @@ export function EstimateApp() {
 
         <div className="mt-8 grid items-start gap-8 lg:grid-cols-[minmax(260px,380px)_minmax(0,1fr)]">
           <div className="lg:sticky lg:top-28">
-            <div className="rounded-3xl bg-white p-3 ring-1 ring-slate-200">
+            <div className="rounded-3xl bg-white p-3 ring-1 ring-line">
               <HouseGraphic home={home} location={location} condenser={condenser} />
             </div>
           </div>

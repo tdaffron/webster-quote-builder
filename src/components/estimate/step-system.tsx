@@ -36,7 +36,7 @@ export function StepSystem({
               <span className="flex items-center justify-between gap-2">
                 <span className="font-heading text-xl font-bold text-ink">{spec.name}</span>
                 {"featured" in spec && spec.featured ? (
-                  <Badge className="bg-mint text-ink hover:bg-mint">Most homes</Badge>
+                  <Badge className="bg-cyan-deep text-white hover:bg-cyan-deep">Most homes</Badge>
                 ) : null}
               </span>
               <span className="mt-3 font-heading text-4xl font-bold tracking-tight text-cyan-deep">{spec.dollarSigns}</span>
@@ -51,7 +51,7 @@ export function StepSystem({
       </div>
 
       <div className="mt-6 grid gap-4 md:grid-cols-2">
-        <fieldset className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
+        <fieldset className="rounded-2xl bg-white p-5 ring-1 ring-line">
           <legend className="font-heading text-lg font-bold text-ink">Thermostat</legend>
           <p className="mt-1 text-sm leading-6 text-steel">
             {tier === "best" ? "Premium includes the communicating thermostat." : "Programmable is included. The others add a little."}
@@ -72,7 +72,7 @@ export function StepSystem({
             })}
           </div>
         </fieldset>
-        <fieldset className="rounded-2xl bg-white p-5 ring-1 ring-slate-200">
+        <fieldset className="rounded-2xl bg-white p-5 ring-1 ring-line">
           <legend className="font-heading text-lg font-bold text-ink">Air quality</legend>
           <p className="mt-1 text-sm leading-6 text-steel">Optional. These add-on prices are placeholders until Webster prices them.</p>
           <div className="mt-3 grid gap-2">

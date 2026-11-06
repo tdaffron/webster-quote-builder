@@ -199,7 +199,7 @@ export function decodeModel(input: string): DecodedModel | DecodeFailure {
       model,
       reason: "unknown",
       message:
-        "That format isn’t one this demo reads. Try a Trane 4TWR, Carrier 24ACC, or Goodman GSX number, or pick a size below.",
+        "That format isn’t one we can read yet. Try a Trane number such as 4TWR, or pick a size below.",
     };
   }
   return decoded;

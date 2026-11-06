@@ -12,8 +12,8 @@ export function ChoiceButton({
       type="button"
       aria-pressed={selected}
       className={cn(
-        "rounded-2xl bg-white p-4 text-left ring-1 ring-slate-200 transition hover:ring-cyan focus-visible:ring-2 focus-visible:ring-cyan-deep focus-visible:outline-none",
-        selected && "bg-foam shadow-[0_16px_40px_-28px_rgba(11,110,138,0.9)] ring-2 ring-cyan-deep",
+        "rounded-2xl bg-white p-4 text-left ring-1 ring-line transition hover:ring-mist focus-visible:ring-2 focus-visible:ring-cyan-deep focus-visible:outline-none",
+        selected && "bg-foam shadow-[0_16px_40px_-28px_rgba(83,112,142,0.9)] ring-2 ring-cyan-deep",
         className,
       )}
       {...props}

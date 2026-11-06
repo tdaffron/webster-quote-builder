@@ -34,6 +34,8 @@ The client link is [https://tdaffron.github.io/webster-quote-builder/](https://t
 
 The quote form confirms on the page with a `WEB-` reference. GitHub Pages has no server, so the demo does not store or email the lead.
 
+To put this on estimator.websterac.com, follow [HOSTING.md](HOSTING.md). That build is not the GitHub Pages build. The Pages files are prefixed with `/webster-quote-builder` and will 404 on the subdomain.
+
 ## Run it
 
 ```bash
@@ -61,4 +63,4 @@ Edit `src/lib/pricing.ts`. Keep the tier, tonnage, thermostat, air-quality, loca
 
 ## Brand
 
-Colors, type, and the wordmark follow websterac.com: Cabin headings, Roboto body, cyan `#57c4e5`, mint `#80ed99`, and the steel Webster logo. Phone, email, and license CAC1819524 are the company’s public details.
+Cabin headings, Roboto body, and the Webster logo. The interface colors are `#53708e`, `#6f87a0`, `#abb9c8`, `#d9d9d9`, and `#dbe1e8`. Phone, email, and license CAC1819524 are the company’s public details.

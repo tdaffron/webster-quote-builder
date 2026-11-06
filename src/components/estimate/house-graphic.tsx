@@ -41,39 +41,39 @@ type Spot = { left: string; top: string };
 const HANDLER_SPOT: Record<HomeType, Record<UnitLocation, Spot>> = {
   single: {
     closet: { left: "46%", top: "56%" },
-    utility: { left: "70%", top: "56%" },
-    garage: { left: "26%", top: "57%" },
+    utility: { left: "64%", top: "56%" },
+    garage: { left: "34%", top: "58%" },
     attic: { left: "48%", top: "34%" },
   },
   "multi-story": {
-    closet: { left: "48%", top: "24%" },
+    closet: { left: "48%", top: "26%" },
     utility: { left: "42%", top: "55%" },
     garage: { left: "18%", top: "56%" },
-    attic: { left: "56%", top: "14%" },
+    attic: { left: "56%", top: "18%" },
   },
   "multi-family": {
-    closet: { left: "42%", top: "40%" },
-    utility: { left: "58%", top: "40%" },
-    garage: { left: "58%", top: "68%" },
-    attic: { left: "48%", top: "24%" },
+    closet: { left: "46%", top: "42%" },
+    utility: { left: "62%", top: "42%" },
+    garage: { left: "62%", top: "70%" },
+    attic: { left: "62%", top: "16%" },
   },
 };
 
 const CONDENSER_SPOT: Record<HomeType, Record<CondenserSitting, Spot>> = {
   single: {
-    ground: { left: "6%", top: "62%" },
-    mounted: { left: "8%", top: "50%" },
-    rooftop: { left: "78%", top: "36%" },
+    ground: { left: "11%", top: "64%" },
+    mounted: { left: "10%", top: "50%" },
+    rooftop: { left: "86%", top: "32%" },
   },
   "multi-story": {
-    ground: { left: "92%", top: "62%" },
-    mounted: { left: "90%", top: "40%" },
-    rooftop: { left: "80%", top: "16%" },
+    ground: { left: "88%", top: "64%" },
+    mounted: { left: "86%", top: "42%" },
+    rooftop: { left: "78%", top: "18%" },
   },
   "multi-family": {
-    ground: { left: "34%", top: "82%" },
-    mounted: { left: "36%", top: "55%" },
-    rooftop: { left: "46%", top: "16%" },
+    ground: { left: "30%", top: "82%" },
+    mounted: { left: "24%", top: "58%" },
+    rooftop: { left: "36%", top: "16%" },
   },
 };
 
@@ -93,10 +93,10 @@ export function HouseGraphic({ home, location = null, condenser = null, compact 
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={publicPath(HOME_ART[home])} alt={label} width={1408} height={768} className="h-auto w-full" />
           {!compact && location ? (
-            <Equipment art="/homes/air-handler.png" label={LOCATION_LABEL[location]} spot={HANDLER_SPOT[home][location]} width="7.4%" />
+            <Equipment art="/homes/air-handler.png" label={LOCATION_LABEL[location]} spot={HANDLER_SPOT[home][location]} width="14.5%" />
           ) : null}
           {!compact && condenser ? (
-            <Equipment art="/homes/condenser.png" label={CONDENSER_LABEL[condenser]} spot={CONDENSER_SPOT[home][condenser]} width="8.4%" />
+            <Equipment art="/homes/condenser.png" label={CONDENSER_LABEL[condenser]} spot={CONDENSER_SPOT[home][condenser]} width="15%" />
           ) : null}
         </div>
       ) : (

@@ -34,7 +34,7 @@ The client link is [https://tdaffron.github.io/webster-quote-builder/](https://t
 
 The quote form confirms on the page with a `WEB-` reference. GitHub Pages has no server, so the demo does not store or email the lead.
 
-To put this on estimator.websterac.com, follow [HOSTING.md](HOSTING.md). That build is not the GitHub Pages build. The Pages files are prefixed with `/webster-quote-builder` and will 404 on the subdomain.
+To publish it at [estimator.websterac.com](https://estimator.websterac.com/), follow [HOSTING.md](HOSTING.md). That is a static upload onto the subdomain. It does not email leads, and it is not the GitHub Pages build. The Pages files are prefixed with `/webster-quote-builder` and will 404 on the subdomain.
 
 ## Run it
 

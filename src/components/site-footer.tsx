@@ -33,11 +33,13 @@ export function SiteFooter() {
             </a>
           </p>
         </div>
-        <div className="text-sm leading-7 text-white/80">
-          <p className="font-heading text-base font-bold text-white">This demo</p>
-          <p>Prices are placeholders. Swap the book in the pricing file when Webster’s numbers are ready.</p>
-          <p>License CAC1819524</p>
-          <p>Typed Trane, Carrier, and Goodman model numbers still decode. Plate photos are not part of this version.</p>
+        <div className="text-sm leading-6 text-white/80">
+          <p>
+            Please note that all prices shown are approximate ranges for budgeting purposes only. They are not an official
+            estimate or quote. Actual pricing depends on your home&apos;s specific needs and installation requirements. A member
+            of Webster AC sales team must visit your property to provide a detailed quote with accurate prices.
+          </p>
+          <p className="mt-4">License CAC1819524</p>
         </div>
       </div>
     </footer>

@@ -20,12 +20,12 @@ export const PRICE_BOOK = {
       id: "good" as const,
       name: "Basic",
       dollarSigns: "$",
-      brand: "Comfortmaker",
+      brand: "Bryant",
       product: "Single-stage heat pump",
       seer2: 15.2,
       headline: "Steady comfort, straightforward install.",
       detail:
-        "A single-stage Comfortmaker heat pump. It cools the house, holds up through an Orlando summer, and keeps the installed price in check.",
+        "A single-stage Bryant heat pump. It cools the house, holds up through an Orlando summer, and keeps the installed price in check.",
       warranty: "10-year parts · 1-year labor",
       byTons: {
         1.5: [6400, 8200],

@@ -15,7 +15,7 @@ export function SiteFooter() {
             style={{ width: "auto" }}
           />
           <p className="mt-4 max-w-sm text-sm leading-6 text-white/75">
-            Family owned in Orlando since 1962. Third generation, and working on the fourth. Authorized dealer for Comfortmaker and Trane.
+            Family owned in Orlando since 1962. Third generation, and working on the fourth. Authorized dealer for Bryant, Comfortmaker, and Trane.
           </p>
         </div>
         <div className="text-sm leading-7 text-white/80">
